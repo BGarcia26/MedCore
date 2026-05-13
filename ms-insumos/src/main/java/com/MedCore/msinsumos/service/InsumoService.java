@@ -39,6 +39,18 @@ public class InsumoService {
         repository.deleteById(id);
     }
 
+    public InsumoDTO actualizar(Long id, Insumo detallesInsumo) {
+    Insumo insumo = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("No se puede actualizar, id no encontrado: " + id));
+        insumo.setNombre(detallesInsumo.getNombre());
+        insumo.setDescripcion(detallesInsumo.getDescripcion());
+        insumo.setStockActual(detallesInsumo.getStockActual());
+        insumo.setStockMinimo(detallesInsumo.getStockMinimo());
+        insumo.setUnidadMedida(detallesInsumo.getUnidadMedida());
+        Insumo actualizado = repository.save(insumo);
+        return convertirADTO(actualizado);
+    }
+
     private InsumoDTO convertirADTO(Insumo insumo) {
         InsumoDTO dto = new InsumoDTO();
         dto.setIdInsumo(insumo.getIdInsumo());

@@ -31,6 +31,11 @@ public class InsumoController {
         Insumo guardado = insumoService.guardar(insumo);
         return ResponseEntity.ok(insumoService.buscarPorId(guardado.getIdInsumo()));
     }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<InsumoDTO> actualizarInsumo(@PathVariable Long id, @RequestBody Insumo detallesInsumo) {
+        return ResponseEntity.ok(insumoService.actualizar(id, detallesInsumo));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarInsumo(@PathVariable Long id) {
