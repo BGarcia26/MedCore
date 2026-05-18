@@ -1,5 +1,6 @@
 package com.MedCore.msmovimientos.controller;
 
+import com.MedCore.msmovimientos.dto.MovimientoDTO;
 import com.MedCore.msmovimientos.model.Movimiento;
 import com.MedCore.msmovimientos.service.MovimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,18 @@ public class MovimientoController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Movimiento movimiento) {
+   @PostMapping
+    public ResponseEntity<?> crear(@RequestBody MovimientoDTO movimientoDTO) {
         try {
-            return ResponseEntity.ok(service.registrar(movimiento));
+            return ResponseEntity.ok(service.registrar(movimientoDTO));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Movimiento> editar(@PathVariable Long id, @RequestBody Movimiento movimiento) {
-        return ResponseEntity.ok(service.actualizar(id, movimiento));
+    public ResponseEntity<Movimiento> editar(@PathVariable Long id, @RequestBody MovimientoDTO movimientoDTO) {
+        return ResponseEntity.ok(service.actualizar(id, movimientoDTO));
     }
 
     @DeleteMapping("/{id}")

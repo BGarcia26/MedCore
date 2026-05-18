@@ -61,4 +61,19 @@ public class InsumoService {
         dto.setUnidadMedida(insumo.getUnidadMedida());
         return dto;
     }
+
+    public void actualizarStock(Long id, Integer cantidad) {
+        Insumo insumo = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Insumo no encontrado con id: " + id));
+        
+        Integer stockActual = insumo.getStockActual() != null ? insumo.getStockActual() : 0;
+        int stockFinal = stockActual + cantidad;
+        
+        if (stockFinal < 0) {
+            throw new RuntimeException("Operación inválida: Stock insuficiente. Disponible: " + insumo.getStockActual());
+        }
+        
+        insumo.setStockActual(stockFinal);
+        repository.save(insumo);
+    }
 }
