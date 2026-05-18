@@ -33,12 +33,13 @@ public class EpisodioService {
     public Episodio registrar(Episodio episodio) {
         try {
             usuarioClient.buscarPorId(episodio.getIdMedico());
-            
             insumoClient.buscarInsumoPorId(episodio.getIdInsumo());
+            Integer cantidadGasto = -Math.abs(episodio.getCantidadUtilizada());
+            insumoClient.actualizarStock(episodio.getIdInsumo(), cantidadGasto);
             
             return repository.save(episodio);
         } catch (Exception e) {
-            throw new RuntimeException("Validación fallida: El ID " + episodio.getIdMedico() + " no existe en Usuarios.");
+            throw new RuntimeException("Error al registrar el episodio médico: " + e.getMessage());
         }
     }
 
