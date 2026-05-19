@@ -1,5 +1,6 @@
 package com.MedCore.msmermas.controller;
 
+import com.MedCore.msmermas.dto.MermaDTO;
 import com.MedCore.msmermas.model.Merma;
 import com.MedCore.msmermas.service.MermaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,8 @@ public class MermaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Merma merma) {
-        try {
-            return ResponseEntity.ok(service.registrar(merma));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Merma> registrar(@RequestBody MermaDTO dto) {
+        return ResponseEntity.ok(service.registrar(dto));
     }
 
     @PutMapping("/{id}")
