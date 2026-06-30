@@ -37,6 +37,11 @@ services:
     dockerContext: ./ms-usuarios
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8082
       - key: SPRING_DATASOURCE_URL
@@ -53,6 +58,11 @@ services:
     dockerContext: ./ms-categorias
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8083
       - key: SPRING_DATASOURCE_URL
@@ -69,6 +79,11 @@ services:
     dockerContext: ./ms-lotes
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8084
       - key: SPRING_DATASOURCE_URL
@@ -85,6 +100,11 @@ services:
     dockerContext: ./ms-movimientos
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8085
       - key: SPRING_DATASOURCE_URL
@@ -101,6 +121,11 @@ services:
     dockerContext: ./ms-mermas
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8086
       - key: SPRING_DATASOURCE_URL
@@ -117,6 +142,11 @@ services:
     dockerContext: ./ms-episodios
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8087
       - key: SPRING_DATASOURCE_URL
@@ -133,6 +163,11 @@ services:
     dockerContext: ./ms-alertas
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8088
       - key: SPRING_DATASOURCE_URL
@@ -149,6 +184,11 @@ services:
     dockerContext: ./ms-reportes
     plan: free
     envVars:
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
       - key: PORT
         value: 8089
       - key: SPRING_DATASOURCE_URL
@@ -167,3 +207,8 @@ services:
     envVars:
       - key: PORT
         value: 8080
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
