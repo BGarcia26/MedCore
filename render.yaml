@@ -1,0 +1,169 @@
+services:
+  - type: web
+    name: eureka
+    runtime: docker
+    dockerfilePath: ./eureka/Dockerfile
+    dockerContext: ./eureka
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8761
+
+  - type: web
+    name: ms-insumos
+    runtime: docker
+    dockerfilePath: ./ms-insumos/Dockerfile
+    dockerContext: ./ms-insumos
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8081
+      - key: EUREKA_URL
+        fromService:
+          type: web
+          name: eureka
+          property: hostport
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-usuarios
+    runtime: docker
+    dockerfilePath: ./ms-usuarios/Dockerfile
+    dockerContext: ./ms-usuarios
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8082
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-categorias
+    runtime: docker
+    dockerfilePath: ./ms-categorias/Dockerfile
+    dockerContext: ./ms-categorias
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8083
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-lotes
+    runtime: docker
+    dockerfilePath: ./ms-lotes/Dockerfile
+    dockerContext: ./ms-lotes
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8084
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-movimientos
+    runtime: docker
+    dockerfilePath: ./ms-movimientos/Dockerfile
+    dockerContext: ./ms-movimientos
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8085
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-mermas
+    runtime: docker
+    dockerfilePath: ./ms-mermas/Dockerfile
+    dockerContext: ./ms-mermas
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8086
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-episodios
+    runtime: docker
+    dockerfilePath: ./ms-episodios/Dockerfile
+    dockerContext: ./ms-episodios
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8087
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-alertas
+    runtime: docker
+    dockerfilePath: ./ms-alertas/Dockerfile
+    dockerContext: ./ms-alertas
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8088
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-reportes
+    runtime: docker
+    dockerfilePath: ./ms-reportes/Dockerfile
+    dockerContext: ./ms-reportes
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8089
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+  - type: web
+    name: ms-gateway
+    runtime: docker
+    dockerfilePath: ./ms-gateway/Dockerfile
+    dockerContext: ./ms-gateway
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
