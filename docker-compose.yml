@@ -1,0 +1,241 @@
+version: '3.8'
+
+networks:
+  medcore-network:
+    driver: bridge
+
+services:
+  # 1. La Base de Datos
+  db-mysql:
+    image: mysql:8.0
+    container_name: db-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: db_medcore
+    networks:
+      - medcore-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p1234"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Servidor de Descubrimiento (Eureka) - CORREGIDO RUTA ./eureka
+  eureka-server:
+    build: ./eureka
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_APPLICATION_NAME=mseureka
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+    networks:
+      - medcore-network
+
+  # 3. API Gateway
+  ms-gateway:
+    build: ./ms-gateway
+    container_name: ms-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_APPLICATION_NAME=msgateway
+      - SERVER_PORT=8080
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA_CLIENT_HTTP_CLIENT_TYPE=restclient
+    depends_on:
+      - eureka-server
+    networks:
+      - medcore-network
+
+  # 4. Microservicio Insumos
+  ms-insumos:
+    build: ./ms-insumos
+    container_name: ms-insumos
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_APPLICATION_NAME=msinsumos
+      - SERVER_PORT=8081
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 5. Microservicio Usuarios
+  ms-usuarios:
+    build: ./ms-usuarios
+    container_name: ms-usuarios
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_APPLICATION_NAME=msusuarios
+      - SERVER_PORT=8082
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 6. Microservicio Categorías
+  ms-categorias:
+    build: ./ms-categorias
+    container_name: ms-categorias
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_APPLICATION_NAME=mscategorias
+      - SERVER_PORT=8083
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 7. Microservicio Lotes
+  ms-lotes:
+    build: ./ms-lotes
+    container_name: ms-lotes
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_APPLICATION_NAME=mslotes
+      - SERVER_PORT=8084
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 8. Microservicio Movimientos
+  ms-movimientos:
+    build: ./ms-movimientos
+    container_name: ms-movimientos
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_APPLICATION_NAME=msmovimientos
+      - SERVER_PORT=8085
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 9. Microservicio Mermas
+  ms-mermas:
+    build: ./ms-mermas
+    container_name: ms-mermas
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_APPLICATION_NAME=msmermas
+      - SERVER_PORT=8086
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 10. Microservicio Episodios
+  ms-episodios:
+    build: ./ms-episodios
+    container_name: ms-episodios
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_APPLICATION_NAME=msepisodios
+      - SERVER_PORT=8087
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 11. Microservicio Alertas
+  ms-alertas:
+    build: ./ms-alertas
+    container_name: ms-alertas
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_APPLICATION_NAME=msalertas
+      - SERVER_PORT=8088
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
+
+  # 12. Microservicio Reportes
+  ms-reportes:
+    build: ./ms-reportes
+    container_name: ms-reportes
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_APPLICATION_NAME=msreportes
+      - SERVER_PORT=8089
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_medcore?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      db-mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    networks:
+      - medcore-network
