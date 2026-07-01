@@ -15,3 +15,5 @@ public interface InsumoClient {
     @PostMapping("/{id}/actualizar-stock")
     void actualizarStock(@PathVariable("id") Long id, @RequestBody Integer cantidad);
 }
+
+// PRUEBA DE RAMA NICOLAS LARA
