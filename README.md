@@ -60,6 +60,23 @@ Registro y Descubrimiento:
 Una vez que el servicio de Eureka (ms-eureka) esté arriba, los microservicios se registrarán automáticamente utilizando la variable EUREKA_CLIENT_SERVICEURL_DEFAULTZONE configurada en Render.
 
 
+-- Despliegue Local (Entorno de Desarrollo)
 
---Para local no guardamos la configuracion pero es levantar una base de datos con laragon por ejemplo y definirle la conexion,usuario y contraseña ,
-basicamente apuntarlo hacia esa BD 
+Para ejecutar este proyecto en un entorno local y realizar pruebas, siga los siguientes pasos:
+
+ 1. Requisitos Previos
+ **Java 21** instalado en el sistema (`JAVA_HOME` configurado).
+ Servidor local de base de datos **MySQL** (Se recomienda **Laragon** o XAMPP).
+Herramienta de pruebas de API Postman.
+
+ 2. Configuración de Base de Datos
+1. Inicie su servidor MySQL local (por ejemplo, inicie Laragon y asegúrese de que MySQL corra en el puerto `3306`).
+2. Cree una base de datos vacía llamada `db_medcore`.
+   *(Nota: Hibernate se encargará de crear las tablas automáticamente gracias a la propiedad `ddl-auto=update`).*
+
+ 3. Descarga y Ejecución
+Para evitar conflictos con variables de entorno globales, el proyecto cuenta con un script automatizado que inyecta Java 21 y levanta los servicios en el orden correcto.
+
+1. Clone este repositorio:
+   ```bash
+   git clone https://github.com/BGarcia26/MedCore.git
